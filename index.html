@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Event Countdown</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sports:#00b4d8;--holidays:#ff6b6b;--entertainment:#c77dff;
+  --cultural:#06d6a0;--bg:#07071a;--text:#e0e0e0
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* ── Header ── */
+.header{text-align:center;padding:60px 20px 30px;position:relative;z-index:1}
+.header h1{
+  font-size:clamp(2rem,5vw,3.8rem);font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(135deg,#00b4d8 0%,#c77dff 50%,#ff6b6b 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px
+}
+.header p{color:#666;font-size:1rem;letter-spacing:.5px}
+.live-count{display:inline-block;margin-top:12px;font-size:.8rem;color:#555;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  padding:4px 14px;border-radius:20px}
+
+/* ── Search ── */
+.search-wrap{display:flex;justify-content:center;padding:10px 20px 16px;position:relative;z-index:1}
+.search-wrap input{
+  width:100%;max-width:480px;padding:11px 20px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:50px;color:#fff;font-size:.95rem;outline:none;transition:border-color .3s
+}
+.search-wrap input::placeholder{color:#444}
+.search-wrap input:focus{border-color:rgba(255,255,255,.3)}
+
+/* ── Main Filters ── */
+.filters{display:flex;justify-content:center;gap:8px;padding:0 20px 12px;flex-wrap:wrap;position:relative;z-index:1}
+.fb{
+  padding:7px 18px;border-radius:50px;border:1px solid rgba(255,255,255,.15);
+  background:transparent;color:#777;cursor:pointer;font-size:.85rem;transition:all .25s;
+  font-family:inherit
+}
+.fb:hover{color:#ddd;border-color:rgba(255,255,255,.3)}
+.fb.active[data-c="all"]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.35);color:#fff}
+.fb.active[data-c="sports"]{background:rgba(0,180,216,.18);border-color:var(--sports);color:var(--sports)}
+.fb.active[data-c="holidays"]{background:rgba(255,107,107,.18);border-color:var(--holidays);color:var(--holidays)}
+.fb.active[data-c="entertainment"]{background:rgba(199,125,255,.18);border-color:var(--entertainment);color:var(--entertainment)}
+.fb.active[data-c="cultural"]{background:rgba(6,214,160,.18);border-color:var(--cultural);color:var(--cultural)}
+
+/* ── Subcategory row ── */
+.subcats{
+  display:none;justify-content:center;gap:6px;
+  padding:6px 20px 22px;flex-wrap:wrap;position:relative;z-index:1;
+  animation:fadeIn .2s ease
+}
+.subcats.visible{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.sfb{
+  padding:5px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.1);
+  background:transparent;color:#555;cursor:pointer;font-size:.78rem;transition:all .2s;
+  font-family:inherit
+}
+.sfb:hover{color:#bbb;border-color:rgba(255,255,255,.25)}
+/* active subcat takes the parent category colour */
+.sfb.active{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:#ddd}
+[data-parent="sports"]  .sfb.active{background:rgba(0,180,216,.12);border-color:rgba(0,180,216,.45);color:var(--sports)}
+[data-parent="holidays"].sfb.active{background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.45);color:var(--holidays)}
+[data-parent="entertainment"].sfb.active{background:rgba(199,125,255,.12);border-color:rgba(199,125,255,.45);color:var(--entertainment)}
+[data-parent="cultural"].sfb.active{background:rgba(6,214,160,.12);border-color:rgba(6,214,160,.45);color:var(--cultural)}
+
+/* ── Sort bar ── */
+.sort-wrap{display:flex;justify-content:flex-end;max-width:1400px;margin:0 auto;
+  padding:0 20px 16px;position:relative;z-index:1;gap:8px;align-items:center}
+.sort-wrap label{font-size:.8rem;color:#555}
+.sort-wrap select{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:#bbb;padding:5px 10px;border-radius:8px;font-size:.8rem;font-family:inherit;cursor:pointer;outline:none
+}
+.event-count{font-size:.8rem;color:#444;margin-right:auto}
+
+/* ── Grid ── */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:18px;padding:0 20px 80px;max-width:1400px;margin:0 auto;position:relative;z-index:1
+}
+
+/* ── Card ── */
+.card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:20px;padding:22px 20px 20px;
+  transition:transform .3s,box-shadow .3s,border-color .3s,background .3s;
+  position:relative;cursor:default
+}
+.card:hover{transform:translateY(-6px);background:rgba(255,255,255,.07)}
+.card[data-c="sports"]:hover{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(0,180,216,.25);border-color:rgba(0,180,216,.3)}
+.card[data-c="holidays"]:hover{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(255,107,107,.25);border-color:rgba(255,107,107,.3)}
+.card[data-c="entertainment"]:hover{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(199,125,255,.25);border-color:rgba(199,125,255,.3)}
+.card[data-c="cultural"]:hover{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(6,214,160,.25);border-color:rgba(6,214,160,.3)}
+
+.card.is-past{opacity:.35}
+.card.is-live{border-color:rgba(255,80,80,.35);background:rgba(255,30,30,.04)}
+.card.is-soon{border-color:rgba(255,200,0,.25)}
+
+/* top row: emoji + badges */
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:6px}
+.card-emoji{font-size:2.2rem;line-height:1;flex-shrink:0}
+.badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.badge{
+  font-size:.65rem;padding:3px 10px;border-radius:50px;
+  text-transform:uppercase;font-weight:700;letter-spacing:.6px;white-space:nowrap
+}
+.badge-sports{background:rgba(0,180,216,.15);color:var(--sports)}
+.badge-holidays{background:rgba(255,107,107,.15);color:var(--holidays)}
+.badge-entertainment{background:rgba(199,125,255,.15);color:var(--entertainment)}
+.badge-cultural{background:rgba(6,214,160,.15);color:var(--cultural)}
+.badge-sub{background:rgba(255,255,255,.07);color:#888;font-weight:600}
+
+.card-name{font-size:1.05rem;font-weight:700;color:#EEF76D;line-height:1.3;margin-bottom:4px}
+.card-desc{font-size:.75rem;font-weight:400;color:#C6C7C5;margin-bottom:10px}
+.card-date{font-size:.75rem;font-weight:400;color:#C6C7C5;margin-bottom:14px}
+
+/* Countdown grid */
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cd-unit{background:rgba(0,0,0,.35);border-radius:10px;padding:9px 4px;text-align:center}
+.cd-num{
+  font-size:1.4rem;font-weight:800;color:#B6D4AB;
+  font-variant-numeric:tabular-nums;display:block;line-height:1
+}
+.cd-lbl{font-size:.6rem;font-weight:500;color:#DED9D9;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+
+/* Status badges */
+.status-live{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,50,50,.18);border:1px solid rgba(255,50,50,.4);
+  color:#ff5a5a;padding:5px 14px;border-radius:50px;
+  font-size:.78rem;font-weight:700;margin-bottom:10px
+}
+.pulse{width:7px;height:7px;background:#ff5a5a;border-radius:50%;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.status-soon{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,200,0,.15);border:1px solid rgba(255,200,0,.35);
+  color:#ffc800;padding:4px 12px;border-radius:50px;font-size:.75rem;font-weight:700;margin-bottom:10px
+}
+.status-done{text-align:center;color:#333;padding:18px 0;font-size:.85rem}
+
+/* No results */
+.no-results{grid-column:1/-1;text-align:center;padding:80px 20px;color:#444;font-size:1rem}
+
+/* Footer */
+footer{text-align:center;padding:24px 20px;color:#333;font-size:.75rem;position:relative;z-index:1}
+#subsubcats{padding-top:2px;padding-bottom:14px}
+
+/* Responsive */
+@media(max-width:500px){
+  .grid{grid-template-columns:1fr}
+  .cd-num{font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<header class="header">
+  <h1>Global Event Countdown</h1>
+  <p>Tracking the world's biggest moments in real time</p>
+  <span class="live-count" id="live-count"></span>
+</header>
+
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search events, e.g. Olympics, Christmas..." oninput="refresh()">
+</div>
+
+<!-- Main category filters -->
+<div class="filters">
+  <button class="fb active" data-c="all"           onclick="setFilter('all')">All Events</button>
+  <button class="fb"        data-c="sports"         onclick="setFilter('sports')">Sports</button>
+  <button class="fb"        data-c="holidays"       onclick="setFilter('holidays')">Holidays</button>
+  <button class="fb"        data-c="entertainment"  onclick="setFilter('entertainment')">Entertainment</button>
+  <button class="fb"        data-c="cultural"       onclick="setFilter('cultural')">Cultural</button>
+</div>
+
+<!-- Subcategory row (populated by JS) -->
+<div class="subcats" id="subcats"></div>
+<!-- Nested sub-subcategory row (populated by JS) -->
+<div class="subcats" id="subsubcats"></div>
+
+<div class="sort-wrap">
+  <span class="event-count" id="event-count"></span>
+  <label>Sort by</label>
+  <select id="sort-sel" onchange="refresh()">
+    <option value="date">Date (soonest)</option>
+    <option value="name">Name (A–Z)</option>
+  </select>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  Countdowns update every second &nbsp;·&nbsp; Some dates are approximate &nbsp;·&nbsp; All times in your local timezone
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// SUBCATEGORY DEFINITIONS
+// ─────────────────────────────────────────────
+const SUBCATS = {
+  sports: [
+    {id:'football',   label:'⚽ Football'},
+    {id:'f1',         label:'🏎️ Formula 1'},
+    {id:'tennis',     label:'🎾 Tennis'},
+    {id:'cricket',    label:'🏏 Cricket'},
+    {id:'nba',        label:'🏀 NBA'},
+    {id:'nfl',        label:'🏈 NFL'},
+    {id:'rugby',      label:'🏉 Rugby'},
+    {id:'golf',       label:'⛳ Golf'},
+    {id:'cycling',    label:'🚴 Cycling'},
+    {id:'athletics',  label:'🏃 Athletics'},
+    {id:'motorsport', label:'🚗 Motorsport'},
+    {id:'multi',      label:'🏅 Multi-Sport'},
+  ],
+  holidays: [
+    {id:'global',  label:'🌍 Global'},
+    {id:'uk',      label:'🇬🇧 United Kingdom'},
+    {id:'ireland', label:'🇮🇪 Ireland'},
+    {id:'usa',     label:'🇺🇸 USA'},
+    {id:'france',  label:'🇫🇷 France'},
+    {id:'china',   label:'🇨🇳 China'},
+    {id:'spain',   label:'🇪🇸 Spain'},
+    {id:'india',   label:'🇮🇳 India'},
+  ],
+  entertainment: [
+    {id:'film',    label:'🎬 Film & TV'},
+    {id:'music',   label:'🎵 Music'},
+    {id:'fashion', label:'👗 Fashion'},
+    {id:'science', label:'🔬 Science'},
+  ],
+  cultural: [
+    {id:'religious', label:'🕌 Religious'},
+    {id:'festival',  label:'🎭 Festival'},
+  ],
+};
+
+// Human-readable subcat labels (for card badges)
+const SUBCAT_LABELS = {
+  football:'Football', f1:'Formula 1', tennis:'Tennis', cricket:'Cricket',
+  nba:'NBA', nfl:'NFL', rugby:'Rugby', golf:'Golf', cycling:'Cycling',
+  athletics:'Athletics', motorsport:'Motorsport', multi:'Multi-Sport',
+  global:'Global', uk:'United Kingdom', ireland:'Ireland', usa:'USA',
+  france:'France', china:'China', spain:'Spain', india:'India',
+  film:'Film & TV', music:'Music', fashion:'Fashion', science:'Science',
+  religious:'Religious', festival:'Festival',
+};
+
+// Nested sub-subcategories (league-level filters under football)
+const SUBCATS2 = {
+  football: [
+    {id:'premierleague', label:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League'},
+    {id:'laliga',        label:'🇪🇸 La Liga'},
+  ],
+};
+
+const SUBCATS2_LABELS = {
+  premierleague: 'Premier League',
+  laliga:        'La Liga',
+};
+
+// ─────────────────────────────────────────────
+// EVENT DATA  (cat + subcat on every entry)
+// ─────────────────────────────────────────────
+const EVENTS = [
+  // ── SPORTS / FOOTBALL / PREMIER LEAGUE ─────
+  {id:33, name:"Premier League 2026/27",         emoji:"⚽", date:"2026-08-08", end:"2027-05-23", cat:"sports", subcat:"football", league:"premierleague", desc:"English Premier League Season"},
+  {id:34, name:"Premier League Final Day 2026/27",emoji:"🏆", date:"2027-05-23",                  cat:"sports", subcat:"football", league:"premierleague", desc:"Simultaneous final-round fixtures"},
+  {id:35, name:"FA Cup Final 2027",              emoji:"🏆", date:"2027-05-17",                  cat:"sports", subcat:"football", league:"premierleague", desc:"Wembley Stadium, London"},
+  {id:36, name:"EFL Cup Final 2027",             emoji:"🏆", date:"2027-03-07",                  cat:"sports", subcat:"football", league:"premierleague", desc:"Carabao Cup Final, Wembley"},
+
+  // ── SPORTS / FOOTBALL / LA LIGA ─────────────
+  {id:37, name:"La Liga 2026/27",                emoji:"⚽", date:"2026-08-15", end:"2027-05-23", cat:"sports", subcat:"football", league:"laliga",        desc:"Spanish La Liga Season"},
+  {id:38, name:"La Liga Final Day 2026/27",      emoji:"🏆", date:"2027-05-23",                  cat:"sports", subcat:"football", league:"laliga",        desc:"Simultaneous final-round fixtures"},
+  {id:39, name:"Copa del Rey Final 2027",        emoji:"🏆", date:"2027-04-24",                  cat:"sports", subcat:"football", league:"laliga",        desc:"Spanish Cup Final"},
+  {id:165,name:"El Clásico — Autumn 2026",       emoji:"⚽", date:"2026-10-25",                  cat:"sports", subcat:"football", league:"laliga",        desc:"FC Barcelona vs Real Madrid, La Liga"},
+
+  // ── SPORTS / FOOTBALL ───────────────────────
+  {id:1,  name:"Roland Garros 2026",          emoji:"🎾", date:"2026-05-25", end:"2026-06-07", cat:"sports", subcat:"tennis",    desc:"French Open, Paris"},
+  {id:2,  name:"FIFA World Cup 2026",          emoji:"⚽", date:"2026-06-11", end:"2026-07-19", cat:"sports", subcat:"football",   desc:"USA, Canada & Mexico"},
+  {id:3,  name:"NBA Finals 2026",              emoji:"🏀", date:"2026-06-04", end:"2026-06-21", cat:"sports", subcat:"nba",        desc:"NBA Championship Series"},
+  {id:4,  name:"Wimbledon 2026",               emoji:"🎾", date:"2026-06-29", end:"2026-07-12", cat:"sports", subcat:"tennis",    desc:"The Championships, London"},
+  {id:5,  name:"Tour de France 2026",          emoji:"🚴", date:"2026-07-04", end:"2026-07-26", cat:"sports", subcat:"cycling",   desc:"Grand Départ"},
+  {id:6,  name:"F1 British Grand Prix 2026",   emoji:"🏎️", date:"2026-07-05",                  cat:"sports", subcat:"f1",         desc:"Silverstone Circuit, UK"},
+  {id:7,  name:"Running of the Bulls 2026",    emoji:"🐂", date:"2026-07-06", end:"2026-07-14", cat:"cultural",subcat:"festival", desc:"San Fermín Festival, Pamplona, Spain"},
+  {id:8,  name:"F1 Hungarian Grand Prix 2026", emoji:"🏎️", date:"2026-07-26",                  cat:"sports", subcat:"f1",         desc:"Hungaroring, Budapest"},
+  {id:9,  name:"Edinburgh Festival 2026",      emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", date:"2026-08-07", end:"2026-08-31", cat:"cultural",subcat:"festival", desc:"World's Largest Arts Festival, Scotland"},
+  {id:10, name:"F1 Belgian Grand Prix 2026",   emoji:"🏎️", date:"2026-08-02",                  cat:"sports", subcat:"f1",         desc:"Circuit de Spa-Francorchamps"},
+  {id:11, name:"US Open Tennis 2026",          emoji:"🎾", date:"2026-08-31", end:"2026-09-13", cat:"sports", subcat:"tennis",    desc:"Flushing Meadows, New York"},
+  {id:12, name:"La Tomatina 2026",             emoji:"🍅", date:"2026-08-26",                  cat:"cultural",subcat:"festival", desc:"Tomato Fight Festival, Buñol, Spain"},
+  {id:13, name:"Burning Man 2026",             emoji:"🔥", date:"2026-08-30", end:"2026-09-07", cat:"cultural",subcat:"festival", desc:"Black Rock Desert, Nevada"},
+  {id:14, name:"World Athletics Champs 2026",  emoji:"🏃", date:"2026-09-13", end:"2026-09-21", cat:"sports", subcat:"athletics", desc:"Tokyo, Japan"},
+  {id:15, name:"Oktoberfest 2026",             emoji:"🍺", date:"2026-09-19", end:"2026-10-04", cat:"cultural",subcat:"festival", desc:"Munich Beer Festival, Germany"},
+  {id:16, name:"Ryder Cup 2026",               emoji:"⛳", date:"2026-09-25",                  cat:"sports", subcat:"golf",       desc:"Bethpage Black, New York"},
+  {id:17, name:"F1 Las Vegas Grand Prix 2026", emoji:"🏎️", date:"2026-11-21",                  cat:"sports", subcat:"f1",         desc:"Las Vegas Strip Circuit"},
+  {id:18, name:"F1 Abu Dhabi Grand Prix 2026", emoji:"🏎️", date:"2026-12-06",                  cat:"sports", subcat:"f1",         desc:"Yas Marina Circuit — Season Finale"},
+  {id:19, name:"New York City Marathon 2026",  emoji:"🏃", date:"2026-11-01",                  cat:"sports", subcat:"athletics", desc:"Five Boroughs, New York"},
+  {id:20, name:"Australian Open 2027",         emoji:"🎾", date:"2027-01-11", end:"2027-01-24", cat:"sports", subcat:"tennis",    desc:"Melbourne Park, Australia"},
+  {id:21, name:"Daytona 500 2027",             emoji:"🏁", date:"2027-02-14",                  cat:"sports", subcat:"motorsport",desc:"Daytona International Speedway"},
+  {id:22, name:"Super Bowl LXI",               emoji:"🏈", date:"2027-02-07",                  cat:"sports", subcat:"nfl",        desc:"NFL Championship Game 2027"},
+  {id:23, name:"NBA Finals 2027",              emoji:"🏀", date:"2027-06-05", end:"2027-06-22", cat:"sports", subcat:"nba",        desc:"NBA Championship Series"},
+  {id:24, name:"Masters Golf 2027",            emoji:"⛳", date:"2027-04-08", end:"2027-04-11", cat:"sports", subcat:"golf",       desc:"Augusta National, Georgia"},
+  {id:25, name:"F1 Monaco Grand Prix 2027",    emoji:"🏎️", date:"2027-05-23",                  cat:"sports", subcat:"f1",         desc:"Circuit de Monaco"},
+  {id:26, name:"Roland Garros 2027",           emoji:"🎾", date:"2027-05-24", end:"2027-06-06", cat:"sports", subcat:"tennis",    desc:"French Open, Paris"},
+  {id:27, name:"Wimbledon 2027",               emoji:"🎾", date:"2027-06-28", end:"2027-07-11", cat:"sports", subcat:"tennis",    desc:"The Championships, London"},
+  {id:28, name:"Rugby World Cup 2027",         emoji:"🏉", date:"2027-09-05", end:"2027-10-23", cat:"sports", subcat:"rugby",     desc:"Australia"},
+  {id:29, name:"ICC Cricket World Cup 2027",   emoji:"🏏", date:"2027-10-09",                  cat:"sports", subcat:"cricket",   desc:"South Africa, Zimbabwe & Namibia"},
+  {id:30, name:"UEFA Euro 2028",               emoji:"⚽", date:"2028-06-09", end:"2028-07-01", cat:"sports", subcat:"football",  desc:"UK & Ireland"},
+  {id:31, name:"Summer Olympics 2028",         emoji:"🏅", date:"2028-07-14", end:"2028-07-30", cat:"sports", subcat:"multi",     desc:"Los Angeles, USA"},
+  {id:32, name:"FIFA World Cup 2030",          emoji:"⚽", date:"2030-06-13",                  cat:"sports", subcat:"football",  desc:"Spain, Portugal & Morocco (Centenary)"},
+
+  // ── HOLIDAYS / UNITED KINGDOM ───────────────
+  {id:40, name:"Guy Fawkes Night 2026",        emoji:"🎆", date:"2026-11-05",                  cat:"holidays",subcat:"uk",      desc:"Bonfire Night, United Kingdom"},
+  {id:41, name:"Burns Night 2027",             emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", date:"2027-01-25",                  cat:"holidays",subcat:"uk",      desc:"Scottish Cultural Celebration"},
+  {id:42, name:"St. George's Day 2027",        emoji:"🌹", date:"2027-04-23",                  cat:"holidays",subcat:"uk",      desc:"Patron Saint of England"},
+  {id:43, name:"Boxing Day 2026",              emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"uk",      desc:"Bank Holiday, United Kingdom & Commonwealth"},
+
+  // ── HOLIDAYS / IRELAND ──────────────────────
+  {id:50, name:"St. Patrick's Day 2027",       emoji:"🍀", date:"2027-03-17",                  cat:"holidays",subcat:"ireland", desc:"Irish National Day"},
+
+  // ── HOLIDAYS / USA ──────────────────────────
+  {id:60, name:"Halloween 2026",               emoji:"🎃", date:"2026-10-31",                  cat:"holidays",subcat:"usa",     desc:"All Hallows' Eve"},
+  {id:61, name:"Thanksgiving 2026",            emoji:"🦃", date:"2026-11-26",                  cat:"holidays",subcat:"usa",     desc:"USA Thanksgiving Day"},
+  {id:62, name:"Independence Day USA 2027",    emoji:"🇺🇸", date:"2027-07-04",                  cat:"holidays",subcat:"usa",     desc:"250th Anniversary of the United States"},
+
+  // ── HOLIDAYS / FRANCE ───────────────────────
+  {id:70, name:"Bastille Day 2026",            emoji:"🇫🇷", date:"2026-07-14",                  cat:"holidays",subcat:"france",  desc:"French National Day"},
+  {id:71, name:"Bastille Day 2027",            emoji:"🇫🇷", date:"2027-07-14",                  cat:"holidays",subcat:"france",  desc:"French National Day"},
+
+  // ── HOLIDAYS / CHINA ────────────────────────
+  {id:80, name:"Chinese New Year 2027",        emoji:"🐑", date:"2027-02-06",                  cat:"holidays",subcat:"china",   desc:"Year of the Goat"},
+  {id:81, name:"China Golden Week 2026",       emoji:"🇨🇳", date:"2026-10-01", end:"2026-10-07", cat:"holidays",subcat:"china",   desc:"National Day Golden Week, China"},
+  {id:82, name:"China Golden Week 2027",       emoji:"🇨🇳", date:"2027-10-01", end:"2027-10-07", cat:"holidays",subcat:"china",   desc:"National Day Golden Week, China"},
+
+  // ── HOLIDAYS / SPAIN ────────────────────────
+  {id:90, name:"Spanish National Day 2026",    emoji:"🇪🇸", date:"2026-10-12",                  cat:"holidays",subcat:"spain",   desc:"Día de la Hispanidad"},
+  {id:91, name:"Spanish National Day 2027",    emoji:"🇪🇸", date:"2027-10-12",                  cat:"holidays",subcat:"spain",   desc:"Día de la Hispanidad"},
+
+  // ── HOLIDAYS / INDIA ────────────────────────
+  {id:100,name:"Diwali 2026",                  emoji:"🪔", date:"2026-10-20",                  cat:"holidays",subcat:"india",   desc:"Hindu Festival of Lights"},
+  {id:101,name:"Diwali 2027",                  emoji:"🪔", date:"2027-11-09",                  cat:"holidays",subcat:"india",   desc:"Hindu Festival of Lights"},
+
+  // ── HOLIDAYS / GLOBAL ───────────────────────
+  {id:110,name:"Hanukkah 2026",                emoji:"🕎", date:"2026-12-04",                  cat:"holidays",subcat:"global",  desc:"Jewish Festival of Lights"},
+  {id:111,name:"Christmas Day 2026",           emoji:"🎄", date:"2026-12-25",                  cat:"holidays",subcat:"global",  desc:"Merry Christmas!"},
+  {id:112,name:"New Year's Eve 2026",          emoji:"🥂", date:"2026-12-31",                  cat:"holidays",subcat:"global",  desc:"Ring in 2027!"},
+  {id:113,name:"New Year's Day 2027",          emoji:"🎆", date:"2027-01-01",                  cat:"holidays",subcat:"global",  desc:"Happy New Year 2027!"},
+  {id:114,name:"Valentine's Day 2027",         emoji:"❤️",  date:"2027-02-14",                  cat:"holidays",subcat:"global",  desc:"Day of Love"},
+  {id:115,name:"Easter Sunday 2027",           emoji:"🐣", date:"2027-04-04",                  cat:"holidays",subcat:"global",  desc:"Easter Sunday"},
+  {id:116,name:"Christmas Day 2027",           emoji:"🎄", date:"2027-12-25",                  cat:"holidays",subcat:"global",  desc:"Merry Christmas!"},
+
+  // ── ENTERTAINMENT / FILM & TV ───────────────
+  {id:120,name:"Golden Globes 2027",           emoji:"🌟", date:"2027-01-10",                  cat:"entertainment",subcat:"film",   desc:"84th Golden Globe Awards"},
+  {id:121,name:"BAFTA Awards 2027",            emoji:"🎬", date:"2027-02-14",                  cat:"entertainment",subcat:"film",   desc:"80th BAFTA Film Awards, London"},
+  {id:122,name:"Oscars 2027",                  emoji:"🏆", date:"2027-03-21",                  cat:"entertainment",subcat:"film",   desc:"99th Academy Awards"},
+  {id:123,name:"Cannes Film Festival 2027",    emoji:"🎬", date:"2027-05-12", end:"2027-05-23", cat:"entertainment",subcat:"film",  desc:"80th Cannes Film Festival"},
+  {id:124,name:"Nobel Prize Week 2026",        emoji:"🔬", date:"2026-10-05", end:"2026-10-12", cat:"entertainment",subcat:"science",desc:"Nobel Prizes Announced, Stockholm"},
+
+  // ── ENTERTAINMENT / MUSIC ───────────────────
+  {id:130,name:"MTV VMAs 2026",                emoji:"🎤", date:"2026-08-30",                  cat:"entertainment",subcat:"music",  desc:"MTV Video Music Awards"},
+  {id:131,name:"Grammy Awards 2027",           emoji:"🎵", date:"2027-02-08",                  cat:"entertainment",subcat:"music",  desc:"69th Grammy Awards, Los Angeles"},
+  {id:132,name:"Coachella 2027",               emoji:"🎸", date:"2027-04-09", end:"2027-04-11", cat:"entertainment",subcat:"music", desc:"Coachella Valley Music Festival"},
+  {id:133,name:"Eurovision 2027",              emoji:"🎶", date:"2027-05-15",                  cat:"entertainment",subcat:"music",  desc:"Eurovision Song Contest Final"},
+
+  // ── ENTERTAINMENT / FASHION ─────────────────
+  {id:140,name:"Met Gala 2027",                emoji:"👗", date:"2027-05-03",                  cat:"entertainment",subcat:"fashion",desc:"Metropolitan Museum of Art, NYC"},
+
+  // ── CULTURAL / RELIGIOUS ────────────────────
+  {id:150,name:"Ramadan 2027 Begins",          emoji:"🌙", date:"2027-02-18",                  cat:"cultural",subcat:"religious", desc:"Holy Month of Ramadan — approx."},
+  {id:151,name:"Eid al-Fitr 2027",             emoji:"🌙", date:"2027-03-20",                  cat:"cultural",subcat:"religious", desc:"End of Ramadan — approx. date"},
+  {id:152,name:"Eid al-Adha 2027",             emoji:"🕌", date:"2027-05-27",                  cat:"cultural",subcat:"religious", desc:"Feast of Sacrifice — approx. date"},
+  {id:153,name:"St. Lucia Day 2026",           emoji:"🕯️",  date:"2026-12-13",                  cat:"cultural",subcat:"religious", desc:"Scandinavian Festival of Light"},
+
+  // ── CULTURAL / FESTIVAL ─────────────────────
+  {id:160,name:"Holi 2027",                    emoji:"🌈", date:"2027-03-22",                  cat:"cultural",subcat:"festival",  desc:"Hindu Festival of Colours, India"},
+  {id:161,name:"Mardi Gras 2027",              emoji:"🎭", date:"2027-02-16",                  cat:"cultural",subcat:"festival",  desc:"New Orleans, USA"},
+  {id:162,name:"Rio Carnival 2027",            emoji:"🎭", date:"2027-02-20", end:"2027-02-25", cat:"cultural",subcat:"festival", desc:"Carnival in Rio de Janeiro, Brazil"},
+  {id:163,name:"Day of the Dead 2026",         emoji:"💀", date:"2026-11-01", end:"2026-11-02", cat:"cultural",subcat:"festival", desc:"Día de los Muertos, Mexico"},
+  {id:164,name:"Songkran 2027",                emoji:"💦", date:"2027-04-13", end:"2027-04-15", cat:"cultural",subcat:"festival", desc:"Thai New Year Water Festival"},
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let filter       = 'all';
+let subFilter    = 'all';
+let subsubFilter = 'all';
+let query        = '';
+
+// ─────────────────────────────────────────────
+// STARFIELD
+// ─────────────────────────────────────────────
+(function(){
+  const cvs=document.getElementById('stars'), cx=cvs.getContext('2d');
+  let st=[];
+  function init(){
+    cvs.width=innerWidth; cvs.height=innerHeight;
+    st=Array.from({length:180},()=>({x:Math.random()*cvs.width,y:Math.random()*cvs.height,
+      r:Math.random()*1.4+.2,a:Math.random(),da:(Math.random()-.5)*.012}));
+  }
+  function draw(){
+    cx.clearRect(0,0,cvs.width,cvs.height);
+    const g=cx.createRadialGradient(cvs.width/2,0,0,cvs.width/2,cvs.height*.6,cvs.height*.8);
+    g.addColorStop(0,'rgba(80,30,180,.08)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=g; cx.fillRect(0,0,cvs.width,cvs.height);
+    st.forEach(s=>{
+      s.a+=s.da; if(s.a<.05||s.a>1)s.da*=-1;
+      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(255,255,255,${s.a.toFixed(2)})`; cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  addEventListener('resize',init); init(); draw();
+})();
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function parseDate(s){return new Date(s+(s.length===10?'T00:00:00':''))}
+function pad(n){return String(n).padStart(2,'0')}
+function timeLeft(d){
+  const diff=d-Date.now(); if(diff<=0)return null;
+  return{d:Math.floor(diff/864e5),h:Math.floor(diff%864e5/36e5),
+         m:Math.floor(diff%36e5/6e4),s:Math.floor(diff%6e4/1e3),raw:diff};
+}
+function isLive(ev){
+  if(!ev.end)return false;
+  const now=Date.now(); return now>=parseDate(ev.date)&&now<=parseDate(ev.end);
+}
+function fmtDate(s){return parseDate(s).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
+
+// ─────────────────────────────────────────────
+// SUBCATEGORY BAR
+// ─────────────────────────────────────────────
+function renderSubcats(){
+  const wrap=document.getElementById('subcats');
+  if(filter==='all'||!SUBCATS[filter]){
+    wrap.classList.remove('visible'); wrap.innerHTML=''; return;
+  }
+  const defs=SUBCATS[filter];
+  // Only show subcats that have at least one event
+  const present=new Set(EVENTS.filter(e=>e.cat===filter).map(e=>e.subcat));
+  const available=defs.filter(d=>present.has(d.id));
+  if(!available.length){wrap.classList.remove('visible');wrap.innerHTML='';return;}
+
+  wrap.dataset.parent=filter;
+  wrap.innerHTML=
+    `<button class="sfb${subFilter==='all'?' active':''}" onclick="setSubFilter('all')">All</button>`+
+    available.map(d=>
+      `<button class="sfb${subFilter===d.id?' active':''}" onclick="setSubFilter('${d.id}')">${d.label}</button>`
+    ).join('');
+  wrap.classList.add('visible');
+  renderSubsubcats();
+}
+
+function renderSubsubcats(){
+  const wrap=document.getElementById('subsubcats');
+  if(!SUBCATS2[subFilter]){wrap.classList.remove('visible');wrap.innerHTML='';return;}
+  const defs=SUBCATS2[subFilter];
+  const present=new Set(EVENTS.filter(e=>e.subcat===subFilter&&e.league).map(e=>e.league));
+  const available=defs.filter(d=>present.has(d.id));
+  if(!available.length){wrap.classList.remove('visible');wrap.innerHTML='';return;}
+  wrap.dataset.parent=filter;
+  wrap.innerHTML=
+    `<button class="sfb${subsubFilter==='all'?' active':''}" onclick="setSubsubFilter('all')">All</button>`+
+    available.map(d=>
+      `<button class="sfb${subsubFilter===d.id?' active':''}" onclick="setSubsubFilter('${d.id}')">${d.label}</button>`
+    ).join('');
+  wrap.classList.add('visible');
+}
+
+// ─────────────────────────────────────────────
+// FILTER CONTROLS
+// ─────────────────────────────────────────────
+function setFilter(c){
+  filter=c; subFilter='all'; subsubFilter='all';
+  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.c===c));
+  renderSubcats(); render();
+}
+function setSubFilter(s){
+  subFilter=s; subsubFilter='all';
+  document.querySelectorAll('#subcats .sfb').forEach(b=>b.classList.toggle('active',
+    (s==='all'&&b.textContent==='All')||(b.getAttribute('onclick')===`setSubFilter('${s}')`)));
+  renderSubsubcats(); render();
+}
+function setSubsubFilter(s){
+  subsubFilter=s;
+  document.querySelectorAll('#subsubcats .sfb').forEach(b=>b.classList.toggle('active',
+    (s==='all'&&b.textContent==='All')||(b.getAttribute('onclick')===`setSubsubFilter('${s}')`)));
+  render();
+}
+function refresh(){query=document.getElementById('search').value.toLowerCase().trim(); render();}
+
+// ─────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────
+function render(){
+  const now=Date.now();
+  const sortMode=document.getElementById('sort-sel').value;
+
+  let list=EVENTS.filter(ev=>{
+    const matchCat    = filter==='all'    || ev.cat===filter;
+    const matchSubcat = subFilter==='all' || ev.subcat===subFilter;
+    const matchLeague = subsubFilter==='all' || ev.league===subsubFilter;
+    const matchSearch = !query ||
+      ev.name.toLowerCase().includes(query)||
+      ev.desc.toLowerCase().includes(query)||
+      (SUBCAT_LABELS[ev.subcat]||'').toLowerCase().includes(query)||
+      (SUBCATS2_LABELS[ev.league]||'').toLowerCase().includes(query);
+    return matchCat&&matchSubcat&&matchLeague&&matchSearch;
+  });
+
+  list.sort((a,b)=>{
+    if(sortMode==='name')return a.name.localeCompare(b.name);
+    const aLive=isLive(a),bLive=isLive(b);
+    const aPast=parseDate(a.date)<now&&!aLive,bPast=parseDate(b.date)<now&&!bLive;
+    if(aLive&&!bLive)return -1; if(!aLive&&bLive)return 1;
+    if(aPast&&!bPast)return 1;  if(!aPast&&bPast)return -1;
+    return parseDate(a.date)-parseDate(b.date);
+  });
+
+  const liveNow=EVENTS.filter(isLive).length;
+  document.getElementById('live-count').textContent=
+    liveNow?`${liveNow} event${liveNow>1?'s':''} live right now`:`Tracking ${EVENTS.length} global events`;
+  document.getElementById('event-count').textContent=
+    `${list.length} event${list.length!==1?'s':''} shown`;
+
+  const grid=document.getElementById('grid');
+  if(!list.length){
+    grid.innerHTML='<div class="no-results">No events match — try adjusting the filters or search.</div>';
+    return;
+  }
+
+  grid.innerHTML=list.map(ev=>{
+    const live=isLive(ev);
+    const tl=timeLeft(parseDate(ev.date));
+    const past=!live&&!tl;
+    const soon=tl&&tl.raw<7*864e5;
+    const subLabel=SUBCAT_LABELS[ev.subcat]||'';
+    const leagueLabel=SUBCATS2_LABELS[ev.league]||'';
+
+    let statusHtml='', cdHtml='';
+    if(live){
+      statusHtml=`<div class="status-live"><span class="pulse"></span>LIVE NOW${ev.end?' — ends '+fmtDate(ev.end):''}</div>`;
+    } else if(past){
+      cdHtml=`<div class="status-done">Event completed</div>`;
+    } else {
+      if(soon)statusHtml=`<div class="status-soon">⚡ Coming up this week!</div>`;
+      cdHtml=`
+        <div class="cd">
+          <div class="cd-unit"><span class="cd-num" data-eid="${ev.id}-d">${tl.d}</span><div class="cd-lbl">Days</div></div>
+          <div class="cd-unit"><span class="cd-num" data-eid="${ev.id}-h">${pad(tl.h)}</span><div class="cd-lbl">Hours</div></div>
+          <div class="cd-unit"><span class="cd-num" data-eid="${ev.id}-m">${pad(tl.m)}</span><div class="cd-lbl">Mins</div></div>
+          <div class="cd-unit"><span class="cd-num" data-eid="${ev.id}-s">${pad(tl.s)}</span><div class="cd-lbl">Secs</div></div>
+        </div>`;
+    }
+
+    return `
+      <div class="card${live?' is-live':''}${past?' is-past':''}${soon&&!live?' is-soon':''}" data-c="${ev.cat}">
+        <div class="card-top">
+          <span class="card-emoji">${ev.emoji}</span>
+          <div class="badges">
+            <span class="badge badge-${ev.cat}">${ev.cat}</span>
+            ${subLabel?`<span class="badge badge-sub">${subLabel}</span>`:''}
+            ${leagueLabel?`<span class="badge badge-sub">${leagueLabel}</span>`:''}
+          </div>
+        </div>
+        <div class="card-name">${ev.name}</div>
+        <div class="card-desc">${ev.desc}</div>
+        <div class="card-date">📅 ${fmtDate(ev.date)}${ev.end?' – '+fmtDate(ev.end):''}</div>
+        ${statusHtml}${cdHtml}
+      </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────
+// TICK — update numbers every second
+// ─────────────────────────────────────────────
+function tick(){
+  EVENTS.forEach(ev=>{
+    if(isLive(ev))return;
+    const tl=timeLeft(parseDate(ev.date)); if(!tl)return;
+    const d=document.querySelector(`[data-eid="${ev.id}-d"]`); if(!d)return;
+    d.textContent=tl.d;
+    document.querySelector(`[data-eid="${ev.id}-h"]`).textContent=pad(tl.h);
+    document.querySelector(`[data-eid="${ev.id}-m"]`).textContent=pad(tl.m);
+    document.querySelector(`[data-eid="${ev.id}-s"]`).textContent=pad(tl.s);
+  });
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+render();
+setInterval(tick,1000);
+setInterval(render,60000);
+</script>
+</body>
+</html>
