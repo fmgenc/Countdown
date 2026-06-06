@@ -264,12 +264,18 @@ const SUBCATS2 = {
   football: [
     {id:'premierleague', label:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League'},
     {id:'laliga',        label:'🇪🇸 La Liga'},
+    {id:'bundesliga',    label:'🇩🇪 Bundesliga'},
+    {id:'ligue1',        label:'🇫🇷 Ligue 1'},
+    {id:'seriea',        label:'🇮🇹 Serie A'},
   ],
 };
 
 const SUBCATS2_LABELS = {
   premierleague: 'Premier League',
   laliga:        'La Liga',
+  bundesliga:    'Bundesliga',
+  ligue1:        'Ligue 1',
+  seriea:        'Serie A',
 };
 
 // ─────────────────────────────────────────────
@@ -290,6 +296,24 @@ const EVENTS = [
   {id:39, name:"Copa del Rey Final 2027",        emoji:"🏆", date:"2027-04-24",                  cat:"sports", subcat:"football", league:"laliga",        desc:"Spanish Cup Final"},
   {id:165,name:"El Clásico — Autumn 2026",       emoji:"⚽", date:"2026-10-25",                  cat:"sports", subcat:"football", league:"laliga",        desc:"FC Barcelona vs Real Madrid, La Liga"},
   {id:180,name:"Supercopa de España 2027",       emoji:"🏆", date:"2027-01-12",                  cat:"sports", subcat:"football", league:"laliga",        desc:"Final Four, Jeddah, Saudi Arabia (date approx.)"},
+
+  // ── SPORTS / FOOTBALL / BUNDESLIGA ──────────
+  {id:181,name:"Bundesliga 2026/27",             emoji:"⚽", date:"2026-08-28", end:"2027-05-22", cat:"sports", subcat:"football", league:"bundesliga",    desc:"German Bundesliga Season"},
+  {id:182,name:"DFL-Supercup 2026",              emoji:"🏆", date:"2026-08-09",                  cat:"sports", subcat:"football", league:"bundesliga",    desc:"German Super Cup (date approx.)"},
+  {id:183,name:"Bundesliga Final Day 2026/27",   emoji:"🏆", date:"2027-05-22",                  cat:"sports", subcat:"football", league:"bundesliga",    desc:"Simultaneous final-round fixtures"},
+  {id:184,name:"DFB-Pokal Final 2027",           emoji:"🏆", date:"2027-05-29",                  cat:"sports", subcat:"football", league:"bundesliga",    desc:"German Cup Final, Olympiastadion Berlin"},
+
+  // ── SPORTS / FOOTBALL / LIGUE 1 ─────────────
+  {id:185,name:"Ligue 1 2026/27",                emoji:"⚽", date:"2026-08-23", end:"2027-05-29", cat:"sports", subcat:"football", league:"ligue1",        desc:"French Ligue 1 Season"},
+  {id:186,name:"Ligue 1 Final Day 2026/27",      emoji:"🏆", date:"2027-05-29",                  cat:"sports", subcat:"football", league:"ligue1",        desc:"Simultaneous final-round fixtures"},
+  {id:187,name:"Coupe de France Final 2027",     emoji:"🏆", date:"2027-04-24",                  cat:"sports", subcat:"football", league:"ligue1",        desc:"French Cup Final, Stade de France (date approx.)"},
+  {id:188,name:"Trophée des Champions 2026",     emoji:"🏆", date:"2026-08-02",                  cat:"sports", subcat:"football", league:"ligue1",        desc:"French Super Cup (date approx.)"},
+
+  // ── SPORTS / FOOTBALL / SERIE A ─────────────
+  {id:189,name:"Serie A 2026/27",                emoji:"⚽", date:"2026-08-23", end:"2027-05-30", cat:"sports", subcat:"football", league:"seriea",        desc:"Italian Serie A Season"},
+  {id:190,name:"Serie A Final Day 2026/27",      emoji:"🏆", date:"2027-05-30",                  cat:"sports", subcat:"football", league:"seriea",        desc:"Simultaneous final-round fixtures"},
+  {id:191,name:"Coppa Italia Final 2027",        emoji:"🏆", date:"2027-05-21",                  cat:"sports", subcat:"football", league:"seriea",        desc:"Italian Cup Final, Stadio Olimpico Rome (date approx.)"},
+  {id:192,name:"Supercoppa Italiana 2027",       emoji:"🏆", date:"2027-01-06",                  cat:"sports", subcat:"football", league:"seriea",        desc:"Italian Super Cup, Saudi Arabia (date approx.)"},
 
   // ── SPORTS / FOOTBALL ───────────────────────
   {id:1,  name:"Roland Garros 2026",          emoji:"🎾", date:"2026-05-25", end:"2026-06-07", cat:"sports", subcat:"tennis",    desc:"French Open, Paris"},
