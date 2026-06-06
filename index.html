@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Event Countdown</title>
-<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -664,7 +663,6 @@ function renderSubcats(){
       `<button class="sfb${subFilter===d.id?' active':''}" onclick="setSubFilter('${d.id}')">${d.label}</button>`
     ).join('');
   wrap.classList.add('visible');
-  twemoji.parse(wrap,{folder:'svg',ext:'.svg'});
   renderSubsubcats();
 }
 
@@ -682,7 +680,6 @@ function renderSubsubcats(){
       `<button class="sfb${subsubFilter===d.id?' active':''}" onclick="setSubsubFilter('${d.id}')">${d.label}</button>`
     ).join('');
   wrap.classList.add('visible');
-  twemoji.parse(wrap,{folder:'svg',ext:'.svg'});
 }
 
 // ─────────────────────────────────────────────
@@ -808,10 +805,8 @@ function tick(){
 // INIT
 // ─────────────────────────────────────────────
 render();
-twemoji.parse(document.body,{folder:'svg',ext:'.svg'});
 setInterval(tick,1000);
 setInterval(render,60000);
-setInterval(()=>twemoji.parse(document.getElementById('grid'),{folder:'svg',ext:'.svg'}),60000);
 </script>
 </body>
 </html>
