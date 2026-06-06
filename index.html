@@ -232,9 +232,15 @@ const SUBCATS = {
     {id:'china',   label:'🇨🇳 China'},
     {id:'spain',   label:'🇪🇸 Spain'},
     {id:'india',   label:'🇮🇳 India'},
-    {id:'australia',   label:'AU Australia'},
-    {id:'germany',   label:'DE Germany'},
-    {id:'turkiye',   label:'🇹🇷 Turkiye'},
+    {id:'germany',     label:'🇩🇪 Germany'},
+    {id:'italy',       label:'🇮🇹 Italy'},
+    {id:'brazil',      label:'🇧🇷 Brazil'},
+    {id:'canada',      label:'🇨🇦 Canada'},
+    {id:'australia',   label:'🇦🇺 Australia'},
+    {id:'nz',          label:'🇳🇿 New Zealand'},
+    {id:'turkiye',     label:'🇹🇷 Türkiye'},
+    {id:'southafrica', label:'🇿🇦 South Africa'},
+    {id:'mexico',      label:'🇲🇽 Mexico'},
   ],
   entertainment: [
     {id:'film',    label:'🎬 Film & TV'},
@@ -255,6 +261,9 @@ const SUBCAT_LABELS = {
   athletics:'Athletics', motorsport:'Motorsport', multi:'Multi-Sport',
   global:'Global', uk:'United Kingdom', ireland:'Ireland', usa:'USA',
   france:'France', china:'China', spain:'Spain', india:'India',
+  germany:'Germany', italy:'Italy', brazil:'Brazil', canada:'Canada',
+  australia:'Australia', nz:'New Zealand', turkiye:'Türkiye',
+  southafrica:'South Africa', mexico:'Mexico',
   film:'Film & TV', music:'Music', fashion:'Fashion', science:'Science',
   religious:'Religious', festival:'Festival',
 };
@@ -391,6 +400,158 @@ const EVENTS = [
   // ── HOLIDAYS / INDIA ────────────────────────
   {id:100,name:"Diwali 2026",                  emoji:"🪔", date:"2026-10-20",                  cat:"holidays",subcat:"india",   desc:"Hindu Festival of Lights"},
   {id:101,name:"Diwali 2027",                  emoji:"🪔", date:"2027-11-09",                  cat:"holidays",subcat:"india",   desc:"Hindu Festival of Lights"},
+
+  // ── HOLIDAYS / UNITED KINGDOM (additional) ──
+  {id:194,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, United Kingdom"},
+  {id:195,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, United Kingdom"},
+  {id:196,name:"Early May Bank Holiday 2026",    emoji:"📅", date:"2026-05-04",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, United Kingdom"},
+  {id:197,name:"Spring Bank Holiday 2026",       emoji:"🌸", date:"2026-05-25",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, United Kingdom"},
+  {id:198,name:"Summer Bank Holiday 2026",       emoji:"☀️",  date:"2026-08-31",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, England, Wales & N. Ireland"},
+  {id:199,name:"St Andrew's Day 2026",           emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", date:"2026-11-30",                  cat:"holidays",subcat:"uk",          desc:"Bank Holiday, Scotland"},
+
+  // ── HOLIDAYS / IRELAND (additional) ─────────
+  {id:200,name:"St. Brigid's Day 2026",          emoji:"🌷", date:"2026-02-02",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:201,name:"St. Patrick's Day 2026",         emoji:"🍀", date:"2026-03-17",                  cat:"holidays",subcat:"ireland",     desc:"Irish National Day"},
+  {id:202,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:203,name:"May Bank Holiday 2026",          emoji:"📅", date:"2026-05-04",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:204,name:"June Bank Holiday 2026",         emoji:"📅", date:"2026-06-01",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:205,name:"August Bank Holiday 2026",       emoji:"📅", date:"2026-08-03",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:206,name:"October Bank Holiday 2026",      emoji:"🍂", date:"2026-10-26",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+  {id:207,name:"St. Stephen's Day 2026",         emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"ireland",     desc:"Irish Public Holiday"},
+
+  // ── HOLIDAYS / SPAIN (additional) ───────────
+  {id:208,name:"Epiphany 2026",                  emoji:"👑", date:"2026-01-06",                  cat:"holidays",subcat:"spain",       desc:"Día de Reyes, Spain"},
+  {id:209,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"spain",       desc:"Viernes Santo, Public Holiday Spain"},
+  {id:210,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"spain",       desc:"Día del Trabajo, Spain"},
+  {id:211,name:"Assumption of Mary 2026",        emoji:"⛪", date:"2026-08-15",                  cat:"holidays",subcat:"spain",       desc:"Asunción de la Virgen, Spain"},
+  {id:212,name:"All Saints' Day 2026",           emoji:"🕯️",  date:"2026-11-01",                  cat:"holidays",subcat:"spain",       desc:"Día de Todos los Santos, Spain"},
+  {id:213,name:"Constitution Day 2026",          emoji:"🇪🇸", date:"2026-12-06",                  cat:"holidays",subcat:"spain",       desc:"Día de la Constitución Española"},
+  {id:214,name:"Immaculate Conception 2026",     emoji:"⛪", date:"2026-12-08",                  cat:"holidays",subcat:"spain",       desc:"La Inmaculada Concepción, Spain"},
+
+  // ── HOLIDAYS / FRANCE (additional) ──────────
+  {id:215,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"france",      desc:"Lundi de Pâques, France"},
+  {id:216,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"france",      desc:"Fête du Travail, France"},
+  {id:217,name:"Victory in Europe Day 2026",     emoji:"🕊️",  date:"2026-05-08",                  cat:"holidays",subcat:"france",      desc:"Victoire 1945, France"},
+  {id:218,name:"Ascension Day 2026",             emoji:"⛪", date:"2026-05-14",                  cat:"holidays",subcat:"france",      desc:"Ascension, France"},
+  {id:219,name:"Whit Monday 2026",               emoji:"🕊️",  date:"2026-05-25",                  cat:"holidays",subcat:"france",      desc:"Lundi de Pentecôte, France"},
+  {id:220,name:"Assumption of Mary 2026",        emoji:"⛪", date:"2026-08-15",                  cat:"holidays",subcat:"france",      desc:"Assomption, France"},
+  {id:221,name:"All Saints' Day 2026",           emoji:"🕯️",  date:"2026-11-01",                  cat:"holidays",subcat:"france",      desc:"Toussaint, France"},
+  {id:222,name:"Armistice Day 2026",             emoji:"🕊️",  date:"2026-11-11",                  cat:"holidays",subcat:"france",      desc:"Jour de l'Armistice, France"},
+
+  // ── HOLIDAYS / USA (additional) ─────────────
+  {id:223,name:"MLK Day 2026",                   emoji:"✊", date:"2026-01-19",                  cat:"holidays",subcat:"usa",         desc:"Martin Luther King Jr. Day"},
+  {id:224,name:"Presidents' Day 2026",           emoji:"🇺🇸", date:"2026-02-16",                  cat:"holidays",subcat:"usa",         desc:"Washington's Birthday, USA"},
+  {id:225,name:"Memorial Day 2026",              emoji:"🇺🇸", date:"2026-05-25",                  cat:"holidays",subcat:"usa",         desc:"Honour the Fallen, USA"},
+  {id:226,name:"Juneteenth 2026",                emoji:"✊", date:"2026-06-19",                  cat:"holidays",subcat:"usa",         desc:"National Independence Day, USA"},
+  {id:227,name:"Independence Day 2026",          emoji:"🎆", date:"2026-07-04",                  cat:"holidays",subcat:"usa",         desc:"4th of July, USA"},
+  {id:228,name:"Labor Day 2026",                 emoji:"🔨", date:"2026-09-07",                  cat:"holidays",subcat:"usa",         desc:"US Labor Day"},
+  {id:229,name:"Columbus Day 2026",              emoji:"⛵", date:"2026-10-12",                  cat:"holidays",subcat:"usa",         desc:"Federal Holiday, USA"},
+  {id:230,name:"Veterans Day 2026",              emoji:"🎖️",  date:"2026-11-11",                  cat:"holidays",subcat:"usa",         desc:"Honour Veterans, USA"},
+
+  // ── HOLIDAYS / CHINA (additional) ───────────
+  {id:231,name:"Chinese New Year 2026",          emoji:"🐴", date:"2026-02-17",                  cat:"holidays",subcat:"china",       desc:"Spring Festival — Year of the Horse"},
+  {id:232,name:"Qingming Festival 2026",         emoji:"🌿", date:"2026-04-05",                  cat:"holidays",subcat:"china",       desc:"Tomb Sweeping Day, China"},
+  {id:233,name:"Labour Day Holiday 2026",        emoji:"🔨", date:"2026-05-01", end:"2026-05-05", cat:"holidays",subcat:"china",       desc:"May Day Golden Week, China"},
+  {id:234,name:"Dragon Boat Festival 2026",      emoji:"🐉", date:"2026-06-20",                  cat:"holidays",subcat:"china",       desc:"Duanwu Festival, China"},
+  {id:235,name:"Mid-Autumn Festival 2026",       emoji:"🌕", date:"2026-09-24",                  cat:"holidays",subcat:"china",       desc:"Moon Festival, China"},
+
+  // ── HOLIDAYS / INDIA (additional) ───────────
+  {id:236,name:"Republic Day 2026",              emoji:"🇮🇳", date:"2026-01-26",                  cat:"holidays",subcat:"india",       desc:"Indian Republic Day, New Delhi"},
+  {id:237,name:"Eid al-Fitr 2026",               emoji:"🌙", date:"2026-03-20",                  cat:"holidays",subcat:"india",       desc:"End of Ramadan, India (date approx.)"},
+  {id:238,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"india",       desc:"Public Holiday, India"},
+  {id:239,name:"Eid al-Adha 2026",               emoji:"🌙", date:"2026-05-27",                  cat:"holidays",subcat:"india",       desc:"Feast of the Sacrifice, India (date approx.)"},
+  {id:240,name:"Independence Day 2026",          emoji:"🇮🇳", date:"2026-08-15",                  cat:"holidays",subcat:"india",       desc:"Indian Independence Day"},
+  {id:241,name:"Gandhi Jayanti 2026",            emoji:"🕊️",  date:"2026-10-02",                  cat:"holidays",subcat:"india",       desc:"Gandhi's Birthday, National Holiday India"},
+
+  // ── HOLIDAYS / GERMANY ───────────────────────
+  {id:242,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"germany",     desc:"Karfreitag, Germany"},
+  {id:243,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"germany",     desc:"Ostermontag, Germany"},
+  {id:244,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"germany",     desc:"Tag der Arbeit, Germany"},
+  {id:245,name:"Ascension Day 2026",             emoji:"⛪", date:"2026-05-14",                  cat:"holidays",subcat:"germany",     desc:"Christi Himmelfahrt, Germany"},
+  {id:246,name:"Whit Monday 2026",               emoji:"🕊️",  date:"2026-05-25",                  cat:"holidays",subcat:"germany",     desc:"Pfingstmontag, Germany"},
+  {id:247,name:"German Unity Day 2026",          emoji:"🇩🇪", date:"2026-10-03",                  cat:"holidays",subcat:"germany",     desc:"Tag der Deutschen Einheit"},
+  {id:248,name:"St. Stephen's Day 2026",         emoji:"🎄", date:"2026-12-26",                  cat:"holidays",subcat:"germany",     desc:"Zweiter Weihnachtstag, Germany"},
+
+  // ── HOLIDAYS / ITALY ─────────────────────────
+  {id:249,name:"Epiphany 2026",                  emoji:"👑", date:"2026-01-06",                  cat:"holidays",subcat:"italy",       desc:"La Befana, Italy"},
+  {id:250,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"italy",       desc:"Pasquetta, Italy"},
+  {id:251,name:"Liberation Day 2026",            emoji:"🇮🇹", date:"2026-04-25",                  cat:"holidays",subcat:"italy",       desc:"Festa della Liberazione, Italy"},
+  {id:252,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"italy",       desc:"Festa dei Lavoratori, Italy"},
+  {id:253,name:"Republic Day 2026",              emoji:"🇮🇹", date:"2026-06-02",                  cat:"holidays",subcat:"italy",       desc:"Festa della Repubblica, Italy"},
+  {id:254,name:"Assumption of Mary 2026",        emoji:"⛪", date:"2026-08-15",                  cat:"holidays",subcat:"italy",       desc:"Ferragosto, Italy"},
+  {id:255,name:"All Saints' Day 2026",           emoji:"🕯️",  date:"2026-11-01",                  cat:"holidays",subcat:"italy",       desc:"Ognissanti, Italy"},
+  {id:256,name:"Immaculate Conception 2026",     emoji:"⛪", date:"2026-12-08",                  cat:"holidays",subcat:"italy",       desc:"Immacolata Concezione, Italy"},
+  {id:257,name:"St. Stephen's Day 2026",         emoji:"🎄", date:"2026-12-26",                  cat:"holidays",subcat:"italy",       desc:"Santo Stefano, Italy"},
+
+  // ── HOLIDAYS / BRAZIL ────────────────────────
+  {id:258,name:"Carnival 2026",                  emoji:"🎭", date:"2026-02-16", end:"2026-02-17", cat:"holidays",subcat:"brazil",      desc:"Carnaval, Brazil"},
+  {id:259,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"brazil",      desc:"Sexta-feira Santa, Brazil"},
+  {id:260,name:"Tiradentes Day 2026",            emoji:"🇧🇷", date:"2026-04-21",                  cat:"holidays",subcat:"brazil",      desc:"Dia de Tiradentes, Brazil"},
+  {id:261,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"brazil",      desc:"Dia do Trabalho, Brazil"},
+  {id:262,name:"Corpus Christi 2026",            emoji:"⛪", date:"2026-06-04",                  cat:"holidays",subcat:"brazil",      desc:"Corpus Christi, Brazil"},
+  {id:263,name:"Independence Day 2026",          emoji:"🇧🇷", date:"2026-09-07",                  cat:"holidays",subcat:"brazil",      desc:"Dia da Independência, Brazil"},
+  {id:264,name:"Our Lady of Aparecida 2026",     emoji:"⛪", date:"2026-10-12",                  cat:"holidays",subcat:"brazil",      desc:"Dia de Nossa Senhora Aparecida, Brazil"},
+  {id:265,name:"All Souls' Day 2026",            emoji:"🕯️",  date:"2026-11-02",                  cat:"holidays",subcat:"brazil",      desc:"Finados, Brazil"},
+  {id:266,name:"Republic Day 2026",              emoji:"🇧🇷", date:"2026-11-15",                  cat:"holidays",subcat:"brazil",      desc:"Proclamação da República, Brazil"},
+  {id:267,name:"Black Consciousness Day 2026",   emoji:"✊", date:"2026-11-20",                  cat:"holidays",subcat:"brazil",      desc:"Dia da Consciência Negra, Brazil"},
+
+  // ── HOLIDAYS / CANADA ────────────────────────
+  {id:268,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"canada",      desc:"Public Holiday, Canada"},
+  {id:269,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"canada",      desc:"Public Holiday, Canada"},
+  {id:270,name:"Victoria Day 2026",              emoji:"🇨🇦", date:"2026-05-18",                  cat:"holidays",subcat:"canada",      desc:"Queen Victoria's Birthday, Canada"},
+  {id:271,name:"Canada Day 2026",                emoji:"🍁", date:"2026-07-01",                  cat:"holidays",subcat:"canada",      desc:"Canadian National Day"},
+  {id:272,name:"Labour Day 2026",                emoji:"🔨", date:"2026-09-07",                  cat:"holidays",subcat:"canada",      desc:"Canadian Labour Day"},
+  {id:273,name:"Thanksgiving 2026",              emoji:"🦃", date:"2026-10-12",                  cat:"holidays",subcat:"canada",      desc:"Canadian Thanksgiving"},
+  {id:274,name:"Remembrance Day 2026",           emoji:"🌺", date:"2026-11-11",                  cat:"holidays",subcat:"canada",      desc:"Lest We Forget, Canada"},
+  {id:275,name:"Boxing Day 2026",                emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"canada",      desc:"Public Holiday, Canada"},
+
+  // ── HOLIDAYS / AUSTRALIA ─────────────────────
+  {id:276,name:"Australia Day 2026",             emoji:"🇦🇺", date:"2026-01-26",                  cat:"holidays",subcat:"australia",   desc:"Australian National Day"},
+  {id:277,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"australia",   desc:"Public Holiday, Australia"},
+  {id:278,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"australia",   desc:"Public Holiday, Australia"},
+  {id:279,name:"ANZAC Day 2026",                 emoji:"🌺", date:"2026-04-25",                  cat:"holidays",subcat:"australia",   desc:"Lest We Forget, Australia & New Zealand"},
+  {id:280,name:"King's Birthday 2026",           emoji:"👑", date:"2026-06-08",                  cat:"holidays",subcat:"australia",   desc:"Public Holiday, Australia (most states)"},
+  {id:281,name:"Boxing Day 2026",                emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"australia",   desc:"Public Holiday, Australia"},
+
+  // ── HOLIDAYS / NEW ZEALAND ───────────────────
+  {id:282,name:"Waitangi Day 2026",              emoji:"🇳🇿", date:"2026-02-06",                  cat:"holidays",subcat:"nz",          desc:"New Zealand National Day"},
+  {id:283,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"nz",          desc:"Public Holiday, New Zealand"},
+  {id:284,name:"Easter Monday 2026",             emoji:"🐣", date:"2026-04-06",                  cat:"holidays",subcat:"nz",          desc:"Public Holiday, New Zealand"},
+  {id:285,name:"ANZAC Day 2026",                 emoji:"🌺", date:"2026-04-25",                  cat:"holidays",subcat:"nz",          desc:"Lest We Forget, Australia & New Zealand"},
+  {id:286,name:"King's Birthday 2026",           emoji:"👑", date:"2026-06-01",                  cat:"holidays",subcat:"nz",          desc:"Public Holiday, New Zealand"},
+  {id:287,name:"Matariki 2026",                  emoji:"⭐", date:"2026-06-26",                  cat:"holidays",subcat:"nz",          desc:"Māori New Year, New Zealand"},
+  {id:288,name:"Labour Day 2026",                emoji:"🔨", date:"2026-10-26",                  cat:"holidays",subcat:"nz",          desc:"Public Holiday, New Zealand"},
+  {id:289,name:"Boxing Day 2026",                emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"nz",          desc:"Public Holiday, New Zealand"},
+
+  // ── HOLIDAYS / TÜRKİYE ───────────────────────
+  {id:290,name:"Eid al-Fitr 2026",               emoji:"🌙", date:"2026-03-20", end:"2026-03-22", cat:"holidays",subcat:"turkiye",     desc:"Ramazan Bayramı, Türkiye (date approx.)"},
+  {id:291,name:"National Sovereignty & Children's Day 2026",emoji:"🇹🇷",date:"2026-04-23",       cat:"holidays",subcat:"turkiye",     desc:"Ulusal Egemenlik ve Çocuk Bayramı"},
+  {id:292,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"turkiye",     desc:"Emek ve Dayanışma Günü, Türkiye"},
+  {id:293,name:"Atatürk Commemoration & Youth Day 2026",emoji:"🇹🇷",date:"2026-05-19",           cat:"holidays",subcat:"turkiye",     desc:"Atatürk'ü Anma, Gençlik ve Spor Bayramı"},
+  {id:294,name:"Eid al-Adha 2026",               emoji:"🌙", date:"2026-05-27", end:"2026-05-30", cat:"holidays",subcat:"turkiye",     desc:"Kurban Bayramı, Türkiye (date approx.)"},
+  {id:295,name:"Democracy & National Unity Day 2026",emoji:"🇹🇷",date:"2026-07-15",              cat:"holidays",subcat:"turkiye",     desc:"Demokrasi ve Millî Birlik Günü"},
+  {id:296,name:"Victory Day 2026",               emoji:"🇹🇷", date:"2026-08-30",                  cat:"holidays",subcat:"turkiye",     desc:"Zafer Bayramı, Türkiye"},
+  {id:297,name:"Republic Day 2026",              emoji:"🇹🇷", date:"2026-10-29",                  cat:"holidays",subcat:"turkiye",     desc:"Cumhuriyet Bayramı, Türkiye"},
+
+  // ── HOLIDAYS / SOUTH AFRICA ──────────────────
+  {id:298,name:"Human Rights Day 2026",          emoji:"✊", date:"2026-03-21",                  cat:"holidays",subcat:"southafrica", desc:"Public Holiday, South Africa"},
+  {id:299,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"southafrica", desc:"Public Holiday, South Africa"},
+  {id:300,name:"Family Day 2026",                emoji:"👨‍👩‍👧‍👦",date:"2026-04-06",                  cat:"holidays",subcat:"southafrica", desc:"Easter Monday, South Africa"},
+  {id:301,name:"Freedom Day 2026",               emoji:"🇿🇦", date:"2026-04-27",                  cat:"holidays",subcat:"southafrica", desc:"End of Apartheid, South Africa"},
+  {id:302,name:"Workers' Day 2026",              emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"southafrica", desc:"Public Holiday, South Africa"},
+  {id:303,name:"Youth Day 2026",                 emoji:"✊", date:"2026-06-16",                  cat:"holidays",subcat:"southafrica", desc:"Soweto Uprising, South Africa"},
+  {id:304,name:"National Women's Day 2026",      emoji:"👩", date:"2026-08-09",                  cat:"holidays",subcat:"southafrica", desc:"Public Holiday, South Africa"},
+  {id:305,name:"Heritage Day 2026",              emoji:"🇿🇦", date:"2026-09-24",                  cat:"holidays",subcat:"southafrica", desc:"Braai Day / Heritage Day, South Africa"},
+  {id:306,name:"Day of Reconciliation 2026",     emoji:"🤝", date:"2026-12-16",                  cat:"holidays",subcat:"southafrica", desc:"Public Holiday, South Africa"},
+  {id:307,name:"Day of Goodwill 2026",           emoji:"🎁", date:"2026-12-26",                  cat:"holidays",subcat:"southafrica", desc:"Boxing Day, South Africa"},
+
+  // ── HOLIDAYS / MEXICO ────────────────────────
+  {id:308,name:"Constitution Day 2026",          emoji:"🇲🇽", date:"2026-02-02",                  cat:"holidays",subcat:"mexico",      desc:"Día de la Constitución, Mexico"},
+  {id:309,name:"Benito Juárez Birthday 2026",    emoji:"🇲🇽", date:"2026-03-16",                  cat:"holidays",subcat:"mexico",      desc:"Natalicio de Benito Juárez, Mexico"},
+  {id:310,name:"Good Friday 2026",               emoji:"✝️",  date:"2026-04-03",                  cat:"holidays",subcat:"mexico",      desc:"Viernes Santo, Mexico"},
+  {id:311,name:"Labour Day 2026",                emoji:"🔨", date:"2026-05-01",                  cat:"holidays",subcat:"mexico",      desc:"Día del Trabajo, Mexico"},
+  {id:312,name:"Independence Day 2026",          emoji:"🇲🇽", date:"2026-09-16",                  cat:"holidays",subcat:"mexico",      desc:"Día de la Independencia, Mexico"},
+  {id:313,name:"Revolution Day 2026",            emoji:"🇲🇽", date:"2026-11-16",                  cat:"holidays",subcat:"mexico",      desc:"Día de la Revolución, Mexico"},
 
   // ── HOLIDAYS / GLOBAL ───────────────────────
   {id:110,name:"Hanukkah 2026",                emoji:"🕎", date:"2026-12-04",                  cat:"holidays",subcat:"global",  desc:"Jewish Festival of Lights"},
