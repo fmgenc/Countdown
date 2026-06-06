@@ -39,11 +39,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* ── Main Filters ── */
 .filters{display:flex;justify-content:center;gap:8px;padding:0 20px 12px;flex-wrap:wrap;position:relative;z-index:1}
 .fb{
-  padding:7px 18px;border-radius:50px;border:1px solid rgba(255,255,255,.15);
-  background:transparent;color:#777;cursor:pointer;font-size:.85rem;transition:all .25s;
+  padding:7px 18px;border-radius:50px;border:1px solid rgba(255,255,255,.2);
+  background:transparent;color:#c5c4c4;cursor:pointer;font-size:.9rem;transition:all .25s;
   font-family:inherit
 }
-.fb:hover{color:#ddd;border-color:rgba(255,255,255,.3)}
+.fb:hover{color:#ddd;border-color:rgba(255,255,255,.35)}
 .fb.active[data-c="all"]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.35);color:#fff}
 .fb.active[data-c="sports"]{background:rgba(0,180,216,.18);border-color:var(--sports);color:var(--sports)}
 .fb.active[data-c="holidays"]{background:rgba(255,107,107,.18);border-color:var(--holidays);color:var(--holidays)}
@@ -59,11 +59,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .subcats.visible{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 .sfb{
-  padding:5px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.1);
-  background:transparent;color:#555;cursor:pointer;font-size:.78rem;transition:all .2s;
+  padding:5px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.2);
+  background:transparent;color:#c5c4c4;cursor:pointer;font-size:.9rem;transition:all .2s;
   font-family:inherit
 }
-.sfb:hover{color:#bbb;border-color:rgba(255,255,255,.25)}
+.sfb:hover{color:#bbb;border-color:rgba(255,255,255,.35)}
 /* active subcat takes the parent category colour */
 .sfb.active{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:#ddd}
 [data-parent="sports"]  .sfb.active{background:rgba(0,180,216,.12);border-color:rgba(0,180,216,.45);color:var(--sports)}
@@ -89,7 +89,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 /* ── Card ── */
 .card{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.20);
   border-radius:20px;padding:22px 20px 20px;
   transition:transform .3s,box-shadow .3s,border-color .3s,background .3s;
   position:relative;cursor:default
@@ -232,6 +232,9 @@ const SUBCATS = {
     {id:'china',   label:'🇨🇳 China'},
     {id:'spain',   label:'🇪🇸 Spain'},
     {id:'india',   label:'🇮🇳 India'},
+    {id:'australia',   label:'AU Australia'},
+    {id:'germany',   label:'DE Germany'},
+    {id:'turkiye',   label:'🇹🇷 Turkiye'},
   ],
   entertainment: [
     {id:'film',    label:'🎬 Film & TV'},
@@ -291,26 +294,23 @@ const EVENTS = [
   {id:3,  name:"NBA Finals 2026",              emoji:"🏀", date:"2026-06-04", end:"2026-06-21", cat:"sports", subcat:"nba",        desc:"NBA Championship Series"},
   {id:4,  name:"Wimbledon 2026",               emoji:"🎾", date:"2026-06-29", end:"2026-07-12", cat:"sports", subcat:"tennis",    desc:"The Championships, London"},
   {id:5,  name:"Tour de France 2026",          emoji:"🚴", date:"2026-07-04", end:"2026-07-26", cat:"sports", subcat:"cycling",   desc:"Grand Départ"},
-  {id:6,  name:"F1 British Grand Prix 2026",   emoji:"🏎️", date:"2026-07-05",                  cat:"sports", subcat:"f1",         desc:"Silverstone Circuit, UK"},
   {id:7,  name:"Running of the Bulls 2026",    emoji:"🐂", date:"2026-07-06", end:"2026-07-14", cat:"cultural",subcat:"festival", desc:"San Fermín Festival, Pamplona, Spain"},
+  {id:168,name:"F1 Monaco Grand Prix 2026",    emoji:"🏎️", date:"2026-06-07",                  cat:"sports", subcat:"f1",         desc:"Circuit de Monaco"},
+  {id:169,name:"F1 Belgian Grand Prix 2026",   emoji:"🏎️", date:"2026-07-19",                  cat:"sports", subcat:"f1",         desc:"Circuit de Spa-Francorchamps"},
   {id:8,  name:"F1 Hungarian Grand Prix 2026", emoji:"🏎️", date:"2026-07-26",                  cat:"sports", subcat:"f1",         desc:"Hungaroring, Budapest"},
   {id:9,  name:"Edinburgh Festival 2026",      emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", date:"2026-08-07", end:"2026-08-31", cat:"cultural",subcat:"festival", desc:"World's Largest Arts Festival, Scotland"},
-  {id:10, name:"F1 Belgian Grand Prix 2026",   emoji:"🏎️", date:"2026-08-02",                  cat:"sports", subcat:"f1",         desc:"Circuit de Spa-Francorchamps"},
   {id:11, name:"US Open Tennis 2026",          emoji:"🎾", date:"2026-08-31", end:"2026-09-13", cat:"sports", subcat:"tennis",    desc:"Flushing Meadows, New York"},
   {id:12, name:"La Tomatina 2026",             emoji:"🍅", date:"2026-08-26",                  cat:"cultural",subcat:"festival", desc:"Tomato Fight Festival, Buñol, Spain"},
   {id:13, name:"Burning Man 2026",             emoji:"🔥", date:"2026-08-30", end:"2026-09-07", cat:"cultural",subcat:"festival", desc:"Black Rock Desert, Nevada"},
   {id:14, name:"World Athletics Champs 2026",  emoji:"🏃", date:"2026-09-13", end:"2026-09-21", cat:"sports", subcat:"athletics", desc:"Tokyo, Japan"},
   {id:15, name:"Oktoberfest 2026",             emoji:"🍺", date:"2026-09-19", end:"2026-10-04", cat:"cultural",subcat:"festival", desc:"Munich Beer Festival, Germany"},
   {id:16, name:"Ryder Cup 2026",               emoji:"⛳", date:"2026-09-25",                  cat:"sports", subcat:"golf",       desc:"Bethpage Black, New York"},
-  {id:17, name:"F1 Las Vegas Grand Prix 2026", emoji:"🏎️", date:"2026-11-21",                  cat:"sports", subcat:"f1",         desc:"Las Vegas Strip Circuit"},
-  {id:18, name:"F1 Abu Dhabi Grand Prix 2026", emoji:"🏎️", date:"2026-12-06",                  cat:"sports", subcat:"f1",         desc:"Yas Marina Circuit — Season Finale"},
   {id:19, name:"New York City Marathon 2026",  emoji:"🏃", date:"2026-11-01",                  cat:"sports", subcat:"athletics", desc:"Five Boroughs, New York"},
   {id:20, name:"Australian Open 2027",         emoji:"🎾", date:"2027-01-11", end:"2027-01-24", cat:"sports", subcat:"tennis",    desc:"Melbourne Park, Australia"},
   {id:21, name:"Daytona 500 2027",             emoji:"🏁", date:"2027-02-14",                  cat:"sports", subcat:"motorsport",desc:"Daytona International Speedway"},
   {id:22, name:"Super Bowl LXI",               emoji:"🏈", date:"2027-02-07",                  cat:"sports", subcat:"nfl",        desc:"NFL Championship Game 2027"},
   {id:23, name:"NBA Finals 2027",              emoji:"🏀", date:"2027-06-05", end:"2027-06-22", cat:"sports", subcat:"nba",        desc:"NBA Championship Series"},
   {id:24, name:"Masters Golf 2027",            emoji:"⛳", date:"2027-04-08", end:"2027-04-11", cat:"sports", subcat:"golf",       desc:"Augusta National, Georgia"},
-  {id:25, name:"F1 Monaco Grand Prix 2027",    emoji:"🏎️", date:"2027-05-23",                  cat:"sports", subcat:"f1",         desc:"Circuit de Monaco"},
   {id:26, name:"Roland Garros 2027",           emoji:"🎾", date:"2027-05-24", end:"2027-06-06", cat:"sports", subcat:"tennis",    desc:"French Open, Paris"},
   {id:27, name:"Wimbledon 2027",               emoji:"🎾", date:"2027-06-28", end:"2027-07-11", cat:"sports", subcat:"tennis",    desc:"The Championships, London"},
   {id:28, name:"Rugby World Cup 2027",         emoji:"🏉", date:"2027-09-05", end:"2027-10-23", cat:"sports", subcat:"rugby",     desc:"Australia"},
@@ -318,7 +318,21 @@ const EVENTS = [
   {id:30, name:"UEFA Euro 2028",               emoji:"⚽", date:"2028-06-09", end:"2028-07-01", cat:"sports", subcat:"football",  desc:"UK & Ireland"},
   {id:31, name:"Summer Olympics 2028",         emoji:"🏅", date:"2028-07-14", end:"2028-07-30", cat:"sports", subcat:"multi",     desc:"Los Angeles, USA"},
   {id:32, name:"FIFA World Cup 2030",          emoji:"⚽", date:"2030-06-13",                  cat:"sports", subcat:"football",  desc:"Spain, Portugal & Morocco (Centenary)"},
-
+  {id:25,  name:"F1 Monaco Grand Prix 2027",    emoji:"🏎️", date:"2027-05-23",                  cat:"sports", subcat:"f1",         desc:"Circuit de Monaco"},
+  {id:166, name:"F1 Barcelona Grand Prix 2026",   emoji:"🏎️", date:"2026-06-14",                  cat:"sports", subcat:"f1",         desc:"Circuit de Barcelona, ES"},
+  {id:167, name:"F1 Austrian Grand Prix 2026",   emoji:"🏎️", date:"2026-06-28",                  cat:"sports", subcat:"f1",         desc:"Red Bull Ring, AT"},
+  {id:6,   name:"F1 British Grand Prix 2026",   emoji:"🏎️", date:"2026-07-05",                  cat:"sports", subcat:"f1",         desc:"Silverstone Circuit, UK"},
+  {id:170,name:"F1 Dutch Grand Prix 2026",      emoji:"🏎️", date:"2026-08-23",                  cat:"sports", subcat:"f1",         desc:"Circuit Zandvoort, Netherlands"},
+  {id:171,name:"F1 Italian Grand Prix 2026",    emoji:"🏎️", date:"2026-09-06",                  cat:"sports", subcat:"f1",         desc:"Autodromo Nazionale Monza"},
+  {id:172,name:"F1 Madrid Grand Prix 2026",     emoji:"🏎️", date:"2026-09-13",                  cat:"sports", subcat:"f1",         desc:"Circuit IFEMA Madrid, Spain"},
+  {id:173,name:"F1 Azerbaijan Grand Prix 2026", emoji:"🏎️", date:"2026-09-26",                  cat:"sports", subcat:"f1",         desc:"Baku City Circuit"},
+  {id:174,name:"F1 Singapore Grand Prix 2026",  emoji:"🏎️", date:"2026-10-11",                  cat:"sports", subcat:"f1",         desc:"Marina Bay Street Circuit"},
+  {id:175,name:"F1 United States Grand Prix 2026",emoji:"🏎️",date:"2026-10-25",                 cat:"sports", subcat:"f1",         desc:"Circuit of the Americas, Austin TX"},
+  {id:176,name:"F1 Mexico City Grand Prix 2026",emoji:"🏎️", date:"2026-11-01",                  cat:"sports", subcat:"f1",         desc:"Autodromo Hermanos Rodriguez"},
+  {id:177,name:"F1 São Paulo Grand Prix 2026",  emoji:"🏎️", date:"2026-11-08",                  cat:"sports", subcat:"f1",         desc:"Autodromo Jose Carlos Pace, Brazil"},
+  {id:17,  name:"F1 Las Vegas Grand Prix 2026", emoji:"🏎️", date:"2026-11-22",                  cat:"sports", subcat:"f1",         desc:"Las Vegas Strip Circuit"},
+  {id:18,  name:"F1 Abu Dhabi Grand Prix 2026", emoji:"🏎️", date:"2026-12-06",                  cat:"sports", subcat:"f1",         desc:"Yas Marina Circuit — Season Finale"},
+  
   // ── HOLIDAYS / UNITED KINGDOM ───────────────
   {id:40, name:"Guy Fawkes Night 2026",        emoji:"🎆", date:"2026-11-05",                  cat:"holidays",subcat:"uk",      desc:"Bonfire Night, United Kingdom"},
   {id:41, name:"Burns Night 2027",             emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", date:"2027-01-25",                  cat:"holidays",subcat:"uk",      desc:"Scottish Cultural Celebration"},
