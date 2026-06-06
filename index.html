@@ -724,7 +724,8 @@ function render(){
       ev.desc.toLowerCase().includes(query)||
       (SUBCAT_LABELS[ev.subcat]||'').toLowerCase().includes(query)||
       (SUBCATS2_LABELS[ev.league]||'').toLowerCase().includes(query);
-    return matchCat&&matchSubcat&&matchLeague&&matchSearch;
+    const notPast = isLive(ev) || parseDate(ev.end||ev.date)>=now;
+    return matchCat&&matchSubcat&&matchLeague&&matchSearch&&notPast;
   });
 
   list.sort((a,b)=>{
